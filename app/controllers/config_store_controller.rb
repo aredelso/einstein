@@ -6,25 +6,34 @@ class ConfigStoreController < ApplicationController
     config_file = config_file.split("\n")
 
     # initialize config hash
-    @config = {}
+    @config = Hash.new
+
+    # initialize errors array
+    @errors = Array.new
 
     # loop through each line
     config_file.each do |x|
         # ignore comments
         next if x[0] == "#"
 
-        # print error if line does not contain =
+        # error if line does not contain =
         if !x.include? "="
-            print "Invalid config parameter: #{x}\n"
+            @errors.push(x)
             next
         end
 
         # split line to get key value pairs
         line = x.split("=")
 
+        # error if line contains too many =
+        if line.length > 2
+            @errors.push(x)
+            next
+        end
+
         # check for incomplete lines
         if line[0].blank? || line[1].blank?
-            print "Invalid config parameter: #{x}\n"
+            @errors.push(x)
             next
         end
 

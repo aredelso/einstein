@@ -1,1 +1,7 @@
 <%= @config %>
+<br>
+<% if @errors.length %>
+    <% @errors.each do |e| %>
+        <span>Invalid parameter: <%= e %></span><br>
+    <% end %>
+<% end %>
